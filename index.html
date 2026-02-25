@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pratik Khanal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --text: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --bg: #0f172a;
+      --card: #1e293b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      padding: 80px 0 100px;
+      text-align: center;
+    }
+
+    .name {
+      font-size: 3.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #c084fc, #6366f1, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      font-size: 1.35rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin: 2rem 0 3rem;
+    }
+
+    .social-links a {
+      color: var(--text-secondary);
+      font-size: 1.9rem;
+      transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+      transform: translateY(-4px);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      border: 2px solid var(--primary);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: rgba(99,102,241,0.12);
+      transform: translateY(-3px);
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 3rem;
+      color: white;
+    }
+
+    .about-content {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 1.18rem;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      transition: all 0.35s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-12px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .project-img {
+      height: 220px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: #475569;
+    }
+
+    .project-body {
+      padding: 1.8rem;
+    }
+
+    .project-title {
+      font-size: 1.45rem;
+      margin-bottom: 0.9rem;
+      color: white;
+    }
+
+    .project-desc {
+      color: var(--text-secondary);
+      margin-bottom: 1.4rem;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .tech {
+      background: rgba(99,102,241,0.15);
+      color: #c7d2fe;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 0 40px;
+      color: var(--text-secondary);
+      border-top: 1px solid #334155;
+    }
+
+    @media (max-width: 600px) {
+      .name { font-size: 2.8rem; }
+      header { padding: 60px 0 80px; }
+      section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1 class="name">Pratik Khanal</h1>
+      <p class="tagline">Student / Developer / Problem Solver</p>
+
+      <div class="social-links">
+        <a href="https://github.com/pratikkhanal16" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://linkedin.com/in/" target="_blank"><i class="fab fa-linkedin"></i></a>
+      </div>
+
+      <div class="buttons">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="mailto:your.email@example.com" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <h2>About Me</h2>
+      <div class="about-content">
+        <p>
+          Hello! I'm a computer science enthusiast currently exploring web development, 
+          competitive programming, machine learning, and everything in between.<br><br>
+          
+          I enjoy turning ideas into working products and solving challenging problems.<br>
+          Currently learning modern JavaScript/TypeScript, React, Python, and cloud technologies.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" style="background:#0f172a;">
+    <div class="container">
+      <h2>Projects</h2>
+      
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-img">🚀</div>
+          <div class="project-body">
+            <h3 class="project-title">Project One</h3>
+            <p class="project-desc">
+              A full-stack web application built with React, Node.js, Express and MongoDB.
+            </p>
+            <div class="tech-stack">
+              <span class="tech">React</span>
+              <span class="tech">Node.js</span>
+              <span class="tech">MongoDB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">📊</div>
+          <div class="project-body">
+            <h3 class="project-title">Data Visualization Dashboard</h3>
+            <p class="project-desc">
+              Interactive dashboard showing real-time statistics using D3.js and Python backend.
+            </p>
+            <div class="tech-stack">
+              <span class="tech">Python</span>
+              <span class="tech">D3.js</span>
+              <span class="tech">Flask</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">🛠</div>
+          <div class="project-body">
+            <h3 class="project-title">CLI Productivity Tool</h3>
+            <p class="project-desc">
+              Command-line tool to manage tasks, notes and pomodoro timer written in Rust.
+            </p>
+            <div class="tech-stack">
+              <span class="tech">Rust</span>
+              <span class="tech">CLI</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Pratik Khanal — Built with ♡ and lots of coffee</p>
+    </div>
+  </footer>
+
+</body>
+</html>
