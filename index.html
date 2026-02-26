@@ -1,304 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pratik Khanal</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --text: #e2e8f0;
-      --text-secondary: #94a3b8;
-      --bg: #0f172a;
-      --card: #1e293b;
-    }
+    <meta charset="UTF-8">
+    <title>Pratik Khanal | Hydrology & AI Researcher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
 
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+        header {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+        header h1 {
+            margin: 0;
+            font-size: 40px;
+        }
 
-    header {
-      padding: 80px 0 100px;
-      text-align: center;
-    }
+        header p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
 
-    .name {
-      font-size: 3.8rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      background: linear-gradient(90deg, #c084fc, #6366f1, #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        nav {
+            background: #ffffff;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-    .tagline {
-      font-size: 1.35rem;
-      color: var(--text-secondary);
-      margin-bottom: 2rem;
-    }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #2c5364;
+            font-weight: 600;
+        }
 
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      margin: 2rem 0 3rem;
-    }
+        section {
+            padding: 60px 15%;
+        }
 
-    .social-links a {
-      color: var(--text-secondary);
-      font-size: 1.9rem;
-      transition: all 0.3s;
-    }
+        h2 {
+            color: #2c5364;
+            margin-bottom: 20px;
+        }
 
-    .social-links a:hover {
-      color: var(--primary);
-      transform: translateY(-4px);
-    }
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
+        .skills span {
+            display: inline-block;
+            background: #2c5364;
+            color: white;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
 
-    .btn {
-      display: inline-block;
-      padding: 14px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.05rem;
-      transition: all 0.3s;
-      border: 2px solid var(--primary);
-    }
+        footer {
+            background: #203a43;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
+        @media(max-width: 768px) {
+            section {
+                padding: 40px 8%;
+            }
 
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(99,102,241,0.35);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: rgba(99,102,241,0.12);
-      transform: translateY(-3px);
-    }
-
-    section {
-      padding: 100px 0;
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 2.8rem;
-      margin-bottom: 3rem;
-      color: white;
-    }
-
-    .about-content {
-      max-width: 720px;
-      margin: 0 auto;
-      font-size: 1.18rem;
-      color: var(--text-secondary);
-      text-align: center;
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
-    }
-
-    .project-card {
-      background: var(--card);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid #334155;
-      transition: all 0.35s;
-    }
-
-    .project-card:hover {
-      transform: translateY(-12px);
-      border-color: var(--primary);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-
-    .project-img {
-      height: 220px;
-      background: #1e293b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      color: #475569;
-    }
-
-    .project-body {
-      padding: 1.8rem;
-    }
-
-    .project-title {
-      font-size: 1.45rem;
-      margin-bottom: 0.9rem;
-      color: white;
-    }
-
-    .project-desc {
-      color: var(--text-secondary);
-      margin-bottom: 1.4rem;
-    }
-
-    .tech-stack {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 1rem;
-    }
-
-    .tech {
-      background: rgba(99,102,241,0.15);
-      color: #c7d2fe;
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 60px 0 40px;
-      color: var(--text-secondary);
-      border-top: 1px solid #334155;
-    }
-
-    @media (max-width: 600px) {
-      .name { font-size: 2.8rem; }
-      header { padding: 60px 0 80px; }
-      section { padding: 60px 0; }
-    }
-  </style>
+            header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <header>
-    <div class="container">
-      <h1 class="name">Pratik Khanal</h1>
-      <p class="tagline">Student / Developer / Problem Solver</p>
+<header>
+    <h1>Pratik Khanal</h1>
+    <p>Hydrology | Climate Change | AI in Water Resources | GLOF Modeling</p>
+</header>
 
-      <div class="social-links">
-        <a href="https://github.com/pratikkhanal16" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="https://linkedin.com/in/" target="_blank"><i class="fab fa-linkedin"></i></a>
-      </div>
+<nav>
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+</nav>
 
-      <div class="buttons">
-        <a href="#projects" class="btn btn-primary">View Projects</a>
-        <a href="mailto:your.email@example.com" class="btn btn-outline">Get in Touch</a>
-      </div>
-    </div>
-  </header>
-
-  <section id="about">
-    <div class="container">
-      <h2>About Me</h2>
-      <div class="about-content">
+<section id="about">
+    <h2>About Me</h2>
+    <div class="card">
         <p>
-          Hello! I'm a computer science enthusiast currently exploring web development, 
-          competitive programming, machine learning, and everything in between.<br><br>
-          
-          I enjoy turning ideas into working products and solving challenging problems.<br>
-          Currently learning modern JavaScript/TypeScript, React, Python, and cloud technologies.
+            I am a passionate researcher specializing in hydrology, climate change impacts, and artificial intelligence applications in water resources management. 
+            My research focuses on Glacial Lake Outburst Flood (GLOF) modeling, hydrodynamic simulations, and machine learning integration in hydro-meteorological systems.
         </p>
-      </div>
+        <p>
+            Currently working on climate change driven hydrological modeling, sediment transport analysis, and AI-based flood prediction frameworks.
+        </p>
     </div>
-  </section>
+</section>
 
-  <section id="projects" style="background:#0f172a;">
-    <div class="container">
-      <h2>Projects</h2>
-      
-      <div class="projects-grid">
-
-        <div class="project-card">
-          <div class="project-img">🚀</div>
-          <div class="project-body">
-            <h3 class="project-title">Project One</h3>
-            <p class="project-desc">
-              A full-stack web application built with React, Node.js, Express and MongoDB.
-            </p>
-            <div class="tech-stack">
-              <span class="tech">React</span>
-              <span class="tech">Node.js</span>
-              <span class="tech">MongoDB</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-img">📊</div>
-          <div class="project-body">
-            <h3 class="project-title">Data Visualization Dashboard</h3>
-            <p class="project-desc">
-              Interactive dashboard showing real-time statistics using D3.js and Python backend.
-            </p>
-            <div class="tech-stack">
-              <span class="tech">Python</span>
-              <span class="tech">D3.js</span>
-              <span class="tech">Flask</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-img">🛠</div>
-          <div class="project-body">
-            <h3 class="project-title">CLI Productivity Tool</h3>
-            <p class="project-desc">
-              Command-line tool to manage tasks, notes and pomodoro timer written in Rust.
-            </p>
-            <div class="tech-stack">
-              <span class="tech">Rust</span>
-              <span class="tech">CLI</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
+<section id="research">
+    <h2>Research Interests</h2>
+    <div class="card">
+        <ul>
+            <li>Glacial Lake Outburst Flood (GLOF) Modeling</li>
+            <li>HEC-RAS & HEC-HMS Hydrodynamic Simulations</li>
+            <li>AI & Machine Learning in Hydrology</li>
+            <li>Climate Change Impact Assessment</li>
+            <li>Remote Sensing & InSAR Applications</li>
+            <li>Sediment Transport & River Morphodynamics</li>
+        </ul>
     </div>
-  </section>
+</section>
 
-  <footer>
-    <div class="container">
-      <p>© 2025 Pratik Khanal — Built with ♡ and lots of coffee</p>
+<section id="projects">
+    <h2>Selected Projects</h2>
+
+    <div class="card">
+        <h3>Lumding Tsho GLOF Modeling</h3>
+        <p>
+            Monte Carlo-based breach parameter simulation integrated with HEC-RAS 2D hydrodynamic modeling under climate change scenarios.
+        </p>
     </div>
-  </footer>
+
+    <div class="card">
+        <h3>HBV + Machine Learning Hybrid Model</h3>
+        <p>
+            Developed hybrid rainfall-runoff modeling using HBV conceptual model combined with regression-based machine learning approaches.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>Dam Break Hazard Assessment</h3>
+        <p>
+            Overtopping failure modeling of Nagmati and Dhap dams, including flood intensity, travel time, and UNESCO heritage site vulnerability analysis.
+        </p>
+    </div>
+
+</section>
+
+<section id="skills">
+    <h2>Technical Skills</h2>
+    <div class="card skills">
+        <span>Python</span>
+        <span>HEC-RAS</span>
+        <span>HEC-HMS</span>
+        <span>Machine Learning</span>
+        <span>Deep Learning</span>
+        <span>Remote Sensing</span>
+        <span>InSAR</span>
+        <span>GIS</span>
+        <span>AutoCAD</span>
+        <span>Hydrologic Modeling</span>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <div class="card">
+        <p>Email: your_email@example.com</p>
+        <p>GitHub: <a href="https://github.com/pratikkhanal16" target="_blank">github.com/pratikkhanal16</a></p>
+        <p>LinkedIn: Add your LinkedIn profile link</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Pratik Khanal | Hydrology & AI Research</p>
+</footer>
 
 </body>
 </html>
