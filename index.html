@@ -1,192 +1,1394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Pratik Khanal | Hydrology & AI Researcher</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Pratik Khanal — Hydrology & AI Research</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --glacier: #a8d8ea;
+    --deep: #0a1628;
+    --midnight: #0d2137;
+    --water: #1a6b8a;
+    --ice: #e8f4f8;
+    --current: #2bb5c8;
+    --sediment: #c4a882;
+    --foam: #f0f8ff;
+    --accent: #00e5ff;
+    --gold: #f0c060;
+  }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        header {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
+  html { scroll-behavior: smooth; }
 
-        header h1 {
-            margin: 0;
-            font-size: 40px;
-        }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--deep);
+    color: var(--ice);
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-        header p {
-            font-size: 18px;
-            margin-top: 10px;
-        }
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(0,229,255,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+  body:hover .cursor { opacity: 1; }
 
-        nav {
-            background: #ffffff;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--deep); }
+  ::-webkit-scrollbar-thumb { background: var(--current); border-radius: 2px; }
 
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #2c5364;
-            font-weight: 600;
-        }
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
 
-        section {
-            padding: 60px 15%;
-        }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 60px 100px 8%;
+    position: relative;
+    z-index: 2;
+  }
 
-        h2 {
-            color: #2c5364;
-            margin-bottom: 20px;
-        }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--current);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--current);
+  }
 
-        .card {
-            background: white;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 90px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    color: white;
+    margin-bottom: 8px;
+  }
+  .hero-name span {
+    color: var(--accent);
+    font-style: italic;
+  }
 
-        .skills span {
-            display: inline-block;
-            background: #2c5364;
-            color: white;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
+  .hero-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--glacier);
+    letter-spacing: 2px;
+    margin-bottom: 36px;
+    line-height: 2;
+  }
 
-        footer {
-            background: #203a43;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
+  .hero-desc {
+    font-size: 16px;
+    color: rgba(232,244,248,0.7);
+    max-width: 420px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
 
-        @media(max-width: 768px) {
-            section {
-                padding: 40px 8%;
-            }
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
 
-            header h1 {
-                font-size: 28px;
-            }
-        }
-    </style>
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--current);
+    color: var(--deep);
+    padding: 14px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,229,255,0.3);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(0,229,255,0.3);
+    color: var(--accent);
+    padding: 14px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-ghost:hover {
+    background: rgba(0,229,255,0.08);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Hero right - animated viz */
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  canvas#heroCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 80px;
+    right: 60px;
+    width: 140px; height: 140px;
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: spin-slow 20s linear infinite;
+  }
+  .hero-badge-inner {
+    position: absolute;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--current);
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Background water lines */
+  .bg-lines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.03;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(0,229,255,0.5) 60px,
+      rgba(0,229,255,0.5) 61px
+    );
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(20px);
+    padding: 16px 8%;
+    border-bottom: 1px solid rgba(0,229,255,0.1);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(232,244,248,0.6);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ─── SECTION BASE ─── */
+  section { position: relative; z-index: 1; }
+
+  .section-wrap {
+    padding: 120px 8%;
+  }
+
+  .section-header {
+    margin-bottom: 80px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--current);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-num::before {
+    content: '';
+    display: block;
+    width: 30px; height: 1px;
+    background: var(--current);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: white;
+    letter-spacing: -1px;
+  }
+  .section-title em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  /* ─── ABOUT ─── */
+  #about { background: var(--midnight); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 17px;
+    color: rgba(232,244,248,0.75);
+    line-height: 1.9;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .about-text p strong {
+    color: var(--glacier);
+    font-weight: 500;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 8px;
+  }
+
+  .stat-box {
+    background: rgba(0,229,255,0.04);
+    border: 1px solid rgba(0,229,255,0.1);
+    padding: 30px 24px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--current);
+    transition: height 0.4s;
+  }
+  .stat-box:hover::before { height: 100%; }
+  .stat-box:hover {
+    background: rgba(0,229,255,0.07);
+    transform: translateY(-3px);
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(232,244,248,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ─── RESEARCH ─── */
+  #research { background: var(--deep); }
+
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .research-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(0,229,255,0.08);
+    padding: 40px 32px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+  .research-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .research-item:hover {
+    border-color: rgba(0,229,255,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .research-item:hover::after { opacity: 1; }
+
+  .research-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .research-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .research-item p {
+    font-size: 14px;
+    color: rgba(232,244,248,0.55);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .research-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--current);
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid rgba(43,181,200,0.3);
+  }
+
+  /* ─── PROJECTS ─── */
+  #projects { background: var(--midnight); }
+
+  .projects-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 40px;
+    align-items: center;
+    padding: 40px 32px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(0,229,255,0.06);
+    transition: all 0.4s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-row::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: linear-gradient(90deg, rgba(0,229,255,0.08), transparent);
+    transition: width 0.5s ease;
+  }
+  .project-row:hover::before { width: 100%; }
+  .project-row:hover {
+    border-color: rgba(0,229,255,0.25);
+  }
+
+  .project-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: rgba(0,229,255,0.12);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+  .project-row:hover .project-num {
+    color: rgba(0,229,255,0.3);
+  }
+
+  .project-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .project-info p {
+    font-size: 14px;
+    color: rgba(232,244,248,0.55);
+    line-height: 1.7;
+    max-width: 600px;
+    font-weight: 300;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .project-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    background: rgba(43,181,200,0.1);
+    color: var(--current);
+    border-radius: 0;
+    border: 1px solid rgba(43,181,200,0.2);
+  }
+
+  .project-arrow {
+    font-size: 24px;
+    color: rgba(0,229,255,0.2);
+    transition: all 0.3s;
+    transform: translateX(0);
+  }
+  .project-row:hover .project-arrow {
+    color: var(--accent);
+    transform: translateX(8px);
+  }
+
+  /* ─── SKILLS ─── */
+  #skills { background: var(--deep); }
+
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .skills-desc {
+    position: sticky;
+    top: 120px;
+  }
+  .skills-desc p {
+    font-size: 16px;
+    color: rgba(232,244,248,0.6);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-top: 20px;
+  }
+
+  .skills-categories { display: flex; flex-direction: column; gap: 48px; }
+
+  .skill-category h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--current);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0,229,255,0.1);
+  }
+
+  .skill-bars { display: flex; flex-direction: column; gap: 16px; }
+
+  .skill-bar-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 40px;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .skill-name {
+    font-size: 14px;
+    color: rgba(232,244,248,0.8);
+    font-weight: 400;
+  }
+
+  .skill-track {
+    height: 3px;
+    background: rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--water), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .skill-fill.animated { transform: scaleX(1); }
+
+  .skill-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--current);
+    text-align: right;
+  }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    background: var(--midnight);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #contact::before {
+    content: 'CONTACT';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(0,229,255,0.02);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: white;
+    margin-bottom: 16px;
+  }
+  .contact-info p {
+    font-size: 16px;
+    color: rgba(232,244,248,0.6);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .contact-links { display: flex; flex-direction: column; gap: 16px; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border: 1px solid rgba(0,229,255,0.1);
+    text-decoration: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,229,255,0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+  }
+  .contact-link:hover::before { transform: translateX(0); }
+  .contact-link:hover { border-color: rgba(0,229,255,0.3); }
+
+  .contact-link-icon {
+    font-size: 20px;
+    width: 40px;
+    text-align: center;
+  }
+  .contact-link-text {
+    flex: 1;
+  }
+  .contact-link-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--current);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .contact-link-value {
+    font-size: 15px;
+    color: rgba(232,244,248,0.8);
+  }
+  .contact-link-arrow {
+    color: rgba(0,229,255,0.3);
+    font-size: 16px;
+    transition: all 0.3s;
+  }
+  .contact-link:hover .contact-link-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  /* Contact form */
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+
+  .form-group { position: relative; }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0,229,255,0.1);
+    color: white;
+    padding: 16px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: rgba(0,229,255,0.4);
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(232,244,248,0.3);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .form-group textarea { height: 120px; }
+
+  .form-submit {
+    align-self: flex-start;
+    background: none;
+    border: 1px solid var(--current);
+    color: var(--current);
+    padding: 14px 40px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .form-submit:hover {
+    background: var(--current);
+    color: var(--deep);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(0,229,255,0.08);
+    padding: 40px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: white;
+  }
+  .footer-logo span { color: var(--accent); }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(232,244,248,0.3);
+    letter-spacing: 1px;
+  }
+
+  /* ─── SCROLL INDICATOR ─── */
+  .scroll-indicator {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--water), var(--accent));
+    z-index: 999;
+    transition: width 0.1s;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── FLOATING PARTICLES ─── */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 1px; height: 1px;
+    background: rgba(0,229,255,0.5);
+    border-radius: 50%;
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    from { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    to { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* Horizontal rule styled */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,229,255,0.2), transparent);
+    margin: 0;
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 120px 8% 80px; }
+    .about-grid, .skills-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    .research-grid { grid-template-columns: 1fr; }
+    .project-row { grid-template-columns: 60px 1fr; }
+    .project-arrow { display: none; }
+    .nav-links { display: none; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
 </head>
-
 <body>
 
-<header>
-    <h1>Pratik Khanal</h1>
-    <p>Hydrology | Climate Change | AI in Water Resources | GLOF Modeling</p>
-</header>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="bg-lines"></div>
+<div class="scroll-indicator" id="scrollBar"></div>
 
-<nav>
-    <a href="#about">About</a>
-    <a href="#research">Research</a>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Skills</a>
-    <a href="#contact">Contact</a>
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">P<span>.</span>Khanal</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
 
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow reveal">Researcher & Modeler</div>
+    <h1 class="hero-name reveal reveal-delay-1">
+      Pratik<br><span>Khanal</span>
+    </h1>
+    <div class="hero-title reveal reveal-delay-2">
+      Hydrology · Climate Change · AI in Water Resources
+    </div>
+    <p class="hero-desc reveal reveal-delay-3">
+      Decoding how water shapes our world — through glacial dynamics, AI-driven flood prediction, and hydrodynamic simulation at the intersection of science and technology.
+    </p>
+    <div class="hero-cta reveal reveal-delay-4">
+      <a href="#projects" class="btn-primary">View Research →</a>
+      <a href="#contact" class="btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">GLOF · HEC-RAS · AI · GIS</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
 <section id="about">
-    <h2>About Me</h2>
-    <div class="card">
-        <p>
-            I am a passionate researcher specializing in hydrology, climate change impacts, and artificial intelligence applications in water resources management. 
-            My research focuses on Glacial Lake Outburst Flood (GLOF) modeling, hydrodynamic simulations, and machine learning integration in hydro-meteorological systems.
-        </p>
-        <p>
-            Currently working on climate change driven hydrological modeling, sediment transport analysis, and AI-based flood prediction frameworks.
-        </p>
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">01 — About</div>
+      <h2 class="section-title">Water. Data.<br><em>Intelligence.</em></h2>
     </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="reveal">I am a <strong>hydrology researcher</strong> specializing in the intersection of climate change, artificial intelligence, and water resources management. My work bridges advanced computational modeling with real-world impact.</p>
+        <p class="reveal reveal-delay-1">Focused on <strong>Glacial Lake Outburst Flood (GLOF) modeling</strong>, hydrodynamic simulations, and machine learning-driven hydro-meteorological systems, I develop tools that help communities prepare for an increasingly uncertain climate future.</p>
+        <p class="reveal reveal-delay-2">Currently advancing <strong>climate-driven hydrological modeling</strong>, sediment transport analysis, and AI-based flood prediction frameworks across Himalayan watersheds.</p>
+      </div>
+      <div class="about-stats reveal reveal-delay-1">
+        <div class="stat-box">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Years Research</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Research Areas</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Technical Skills</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Major Projects</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- RESEARCH -->
 <section id="research">
-    <h2>Research Interests</h2>
-    <div class="card">
-        <ul>
-            <li>Glacial Lake Outburst Flood (GLOF) Modeling</li>
-            <li>HEC-RAS & HEC-HMS Hydrodynamic Simulations</li>
-            <li>AI & Machine Learning in Hydrology</li>
-            <li>Climate Change Impact Assessment</li>
-            <li>Remote Sensing & InSAR Applications</li>
-            <li>Sediment Transport & River Morphodynamics</li>
-        </ul>
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">02 — Research</div>
+      <h2 class="section-title">Areas of<br><em>Inquiry</em></h2>
     </div>
+    <div class="research-grid">
+      <div class="research-item reveal">
+        <span class="research-icon">🏔️</span>
+        <h3>Glacial Lake Outburst Flood Modeling</h3>
+        <p>Monte Carlo-based probabilistic breach parameter simulation integrated with 2D hydrodynamic modeling under climate change scenarios.</p>
+        <span class="research-tag">Primary Focus</span>
+      </div>
+      <div class="research-item reveal reveal-delay-1">
+        <span class="research-icon">💧</span>
+        <h3>HEC-RAS & HEC-HMS Hydrodynamics</h3>
+        <p>Advanced 1D/2D hydrodynamic simulations for flood routing, inundation mapping, and infrastructure vulnerability assessment.</p>
+        <span class="research-tag">Modeling</span>
+      </div>
+      <div class="research-item reveal reveal-delay-2">
+        <span class="research-icon">🤖</span>
+        <h3>AI & ML in Hydrology</h3>
+        <p>Hybrid machine learning models for rainfall-runoff prediction, combining conceptual models with deep learning architectures.</p>
+        <span class="research-tag">Innovation</span>
+      </div>
+      <div class="research-item reveal reveal-delay-3">
+        <span class="research-icon">🌡️</span>
+        <h3>Climate Change Impact Assessment</h3>
+        <p>Evaluating hydrological regime shifts under CMIP6 climate projections across glacierized and snow-dominated catchments.</p>
+        <span class="research-tag">Assessment</span>
+      </div>
+      <div class="research-item reveal reveal-delay-1">
+        <span class="research-icon">🛰️</span>
+        <h3>Remote Sensing & InSAR</h3>
+        <p>Satellite-based surface deformation analysis, glacier mapping, and land use/land cover change detection using multi-temporal imagery.</p>
+        <span class="research-tag">Geospatial</span>
+      </div>
+      <div class="research-item reveal reveal-delay-2">
+        <span class="research-icon">🌊</span>
+        <h3>Sediment Transport & Morphodynamics</h3>
+        <p>Quantifying sediment dynamics in high-mountain rivers under extreme events, including debris flow and channel evolution modeling.</p>
+        <span class="research-tag">Fluvial</span>
+      </div>
+    </div>
+  </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- PROJECTS -->
 <section id="projects">
-    <h2>Selected Projects</h2>
-
-    <div class="card">
-        <h3>Lumding Tsho GLOF Modeling</h3>
-        <p>
-            Monte Carlo-based breach parameter simulation integrated with HEC-RAS 2D hydrodynamic modeling under climate change scenarios.
-        </p>
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">03 — Projects</div>
+      <h2 class="section-title">Selected<br><em>Work</em></h2>
     </div>
-
-    <div class="card">
-        <h3>HBV + Machine Learning Hybrid Model</h3>
-        <p>
-            Developed hybrid rainfall-runoff modeling using HBV conceptual model combined with regression-based machine learning approaches.
-        </p>
+    <div class="projects-list">
+      <div class="project-row reveal">
+        <div class="project-num">01</div>
+        <div class="project-info">
+          <h3>Lumding Tsho GLOF Modeling</h3>
+          <p>Monte Carlo-based breach parameter simulation integrated with HEC-RAS 2D hydrodynamic modeling under climate change scenarios. Produced probabilistic flood hazard maps for downstream communities.</p>
+          <div class="project-tags">
+            <span class="project-tag">HEC-RAS 2D</span>
+            <span class="project-tag">Monte Carlo</span>
+            <span class="project-tag">Climate Change</span>
+            <span class="project-tag">Python</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+      <div class="project-row reveal reveal-delay-1">
+        <div class="project-num">02</div>
+        <div class="project-info">
+          <h3>HBV + Machine Learning Hybrid Model</h3>
+          <p>Developed a hybrid rainfall-runoff modeling framework combining the HBV conceptual model with regression-based and deep learning ML approaches, achieving improved discharge simulation accuracy.</p>
+          <div class="project-tags">
+            <span class="project-tag">HBV Model</span>
+            <span class="project-tag">Deep Learning</span>
+            <span class="project-tag">Python</span>
+            <span class="project-tag">Rainfall-Runoff</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+      <div class="project-row reveal reveal-delay-2">
+        <div class="project-num">03</div>
+        <div class="project-info">
+          <h3>Dam Break Hazard Assessment</h3>
+          <p>Overtopping failure modeling of Nagmati and Dhap dams, including flood wave intensity mapping, travel time analysis, and UNESCO world heritage site vulnerability assessment in the Kathmandu Valley.</p>
+          <div class="project-tags">
+            <span class="project-tag">Dam Break</span>
+            <span class="project-tag">HEC-RAS</span>
+            <span class="project-tag">GIS</span>
+            <span class="project-tag">Risk Assessment</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
     </div>
-
-    <div class="card">
-        <h3>Dam Break Hazard Assessment</h3>
-        <p>
-            Overtopping failure modeling of Nagmati and Dhap dams, including flood intensity, travel time, and UNESCO heritage site vulnerability analysis.
-        </p>
-    </div>
-
+  </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- SKILLS -->
 <section id="skills">
-    <h2>Technical Skills</h2>
-    <div class="card skills">
-        <span>Python</span>
-        <span>HEC-RAS</span>
-        <span>HEC-HMS</span>
-        <span>Machine Learning</span>
-        <span>Deep Learning</span>
-        <span>Remote Sensing</span>
-        <span>InSAR</span>
-        <span>GIS</span>
-        <span>AutoCAD</span>
-        <span>Hydrologic Modeling</span>
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">04 — Skills</div>
+      <h2 class="section-title">Technical<br><em>Arsenal</em></h2>
     </div>
+    <div class="skills-layout">
+      <div class="skills-desc reveal">
+        <p>A comprehensive toolkit spanning computational modeling, geospatial analysis, and machine learning — built through years of applied research in water resources and climate science.</p>
+      </div>
+      <div class="skills-categories">
+        <div class="skill-category reveal">
+          <h4>Programming & ML</h4>
+          <div class="skill-bars">
+            <div class="skill-bar-row">
+              <span class="skill-name">Python</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.92"></div></div>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">Machine Learning</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.85"></div></div>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">Deep Learning</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.78"></div></div>
+              <span class="skill-pct">78%</span>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category reveal reveal-delay-1">
+          <h4>Hydrological Modeling</h4>
+          <div class="skill-bars">
+            <div class="skill-bar-row">
+              <span class="skill-name">HEC-RAS</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.90"></div></div>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">HEC-HMS</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.88"></div></div>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">Hydrologic Modeling</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.87"></div></div>
+              <span class="skill-pct">87%</span>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category reveal reveal-delay-2">
+          <h4>Geospatial & Remote Sensing</h4>
+          <div class="skill-bars">
+            <div class="skill-bar-row">
+              <span class="skill-name">GIS</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.88"></div></div>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">Remote Sensing</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.82"></div></div>
+              <span class="skill-pct">82%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">InSAR</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.75"></div></div>
+              <span class="skill-pct">75%</span>
+            </div>
+            <div class="skill-bar-row">
+              <span class="skill-name">AutoCAD</span>
+              <div class="skill-track"><div class="skill-fill" data-width="0.72"></div></div>
+              <span class="skill-pct">72%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- CONTACT -->
 <section id="contact">
-    <h2>Contact</h2>
-    <div class="card">
-        <p>Email: your_email@example.com</p>
-        <p>GitHub: <a href="https://github.com/pratikkhanal16" target="_blank">github.com/pratikkhanal16</a></p>
-        <p>LinkedIn: Add your LinkedIn profile link</p>
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">05 — Contact</div>
+      <h2 class="section-title">Let's<br><em>Connect</em></h2>
     </div>
+    <div class="contact-layout">
+      <div class="contact-info reveal">
+        <h3>Open to Collaboration</h3>
+        <p>Interested in research partnerships, academic collaboration, or discussing the frontiers of hydrology and AI? Reach out — I'm always glad to connect with fellow researchers and practitioners.</p>
+        <div class="contact-links">
+          <a href="mailto:your_email@example.com" class="contact-link">
+            <span class="contact-link-icon">✉</span>
+            <div class="contact-link-text">
+              <div class="contact-link-label">Email</div>
+              <div class="contact-link-value">your_email@example.com</div>
+            </div>
+            <span class="contact-link-arrow">→</span>
+          </a>
+          <a href="https://github.com/pratikkhanal16" target="_blank" class="contact-link">
+            <span class="contact-link-icon">⌥</span>
+            <div class="contact-link-text">
+              <div class="contact-link-label">GitHub</div>
+              <div class="contact-link-value">github.com/pratikkhanal16</div>
+            </div>
+            <span class="contact-link-arrow">→</span>
+          </a>
+          <a href="#" class="contact-link">
+            <span class="contact-link-icon">in</span>
+            <div class="contact-link-text">
+              <div class="contact-link-label">LinkedIn</div>
+              <div class="contact-link-value">Add your LinkedIn profile</div>
+            </div>
+            <span class="contact-link-arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="contact-form">
+          <div class="form-group">
+            <input type="text" placeholder="Your Name">
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Your Email">
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Subject">
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Your Message"></textarea>
+          </div>
+          <button class="form-submit">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-    <p>© 2026 Pratik Khanal | Hydrology & AI Research</p>
+  <div class="footer-logo">P<span>.</span>Khanal</div>
+  <div class="footer-copy">© 2026 Pratik Khanal — Hydrology & AI Research</div>
 </footer>
 
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 80);
+});
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px';
+    cursor.style.height = '20px';
+    ring.style.width = '60px';
+    ring.style.height = '60px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px';
+    cursor.style.height = '12px';
+    ring.style.width = '40px';
+    ring.style.height = '40px';
+  });
+});
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  // Scroll bar
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('scrollBar').style.width = pct + '%';
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Skill bar animation
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-fill').forEach(fill => {
+        setTimeout(() => fill.classList.add('animated'), 300);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-category').forEach(el => skillObserver.observe(el));
+
+// Hero canvas - water wave / particle system
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+function resize() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const waves = Array.from({length: 6}, (_, i) => ({
+  y: 0.3 + i * 0.12,
+  amp: 20 + i * 8,
+  freq: 0.008 - i * 0.001,
+  speed: 0.015 + i * 0.003,
+  phase: i * Math.PI / 3,
+  alpha: 0.06 - i * 0.008,
+}));
+
+const dots = Array.from({length: 60}, () => ({
+  x: Math.random(), y: Math.random(),
+  vx: (Math.random() - 0.5) * 0.0005,
+  vy: (Math.random() - 0.5) * 0.0005,
+  r: Math.random() * 1.5 + 0.5,
+  a: Math.random() * 0.5 + 0.1,
+}));
+
+let t = 0;
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Gradient bg
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, 'rgba(10,22,40,0)');
+  grad.addColorStop(1, 'rgba(26,107,138,0.15)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Waves
+  waves.forEach(w => {
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 2) {
+      const y = w.y * H + Math.sin(x * w.freq + w.phase + t * w.speed) * w.amp
+                        + Math.cos(x * w.freq * 0.7 + t * w.speed * 1.3) * w.amp * 0.5;
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+    const wg = ctx.createLinearGradient(0, w.y * H - w.amp, 0, H);
+    wg.addColorStop(0, `rgba(0,229,255,${w.alpha})`);
+    wg.addColorStop(1, 'rgba(0,50,80,0)');
+    ctx.fillStyle = wg;
+    ctx.fill();
+  });
+
+  // Particles / constellation
+  dots.forEach(d => {
+    d.x += d.vx; d.y += d.vy;
+    if (d.x < 0) d.x = 1; if (d.x > 1) d.x = 0;
+    if (d.y < 0) d.y = 1; if (d.y > 1) d.y = 0;
+    ctx.beginPath();
+    ctx.arc(d.x * W, d.y * H, d.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,229,255,${d.a})`;
+    ctx.fill();
+  });
+
+  // Lines between close dots
+  for (let i = 0; i < dots.length; i++) {
+    for (let j = i + 1; j < dots.length; j++) {
+      const dx = (dots[i].x - dots[j].x) * W;
+      const dy = (dots[i].y - dots[j].y) * H;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 80) {
+        ctx.beginPath();
+        ctx.moveTo(dots[i].x * W, dots[i].y * H);
+        ctx.lineTo(dots[j].x * W, dots[j].y * H);
+        ctx.strokeStyle = `rgba(0,229,255,${0.06 * (1 - dist / 80)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(0,229,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 60) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 0; y < H; y += 60) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  t++;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// Floating particles
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  p.style.cssText = `
+    left: ${Math.random() * 100}%;
+    width: ${size}px;
+    height: ${size}px;
+    animation-duration: ${Math.random() * 20 + 15}s;
+    animation-delay: ${Math.random() * 20}s;
+    opacity: ${Math.random() * 0.4 + 0.1};
+  `;
+  particlesEl.appendChild(p);
+}
+
+// Initial hero reveal
+setTimeout(() => {
+  document.querySelectorAll('.hero-left .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 150);
+  });
+}, 100);
+</script>
 </body>
 </html>
