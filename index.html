@@ -1,1 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUAL2K Studio - Modern River Water Quality Model</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .card {
+      transition: all 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+    .tab-active {
+      background-color: white;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen p-4 md:p-6">
 
+<div class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)] gap-6">
+
+  <!-- Sidebar -->
+  <div class="space-y-4">
+
+    <!-- Logo Card -->
+    <div class="bg-gradient-to-br from-slate-900 to-slate-700 text-white rounded-3xl shadow-sm overflow-hidden">
+      <div class="p-5">
+        <div class="flex items-center gap-3">
+          <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center">
+            <i class="fas fa-water text-2xl"></i>
+          </div>
+          <div>
+            <div class="text-lg font-semibold">QUAL2K Studio</div>
+            <div class="text-xs text-slate-300">Modern interface prototype</div>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="px-3 py-1 text-xs bg-white/20 rounded-full">River water quality</span>
+          <span class="px-3 py-1 text-xs bg-white/20 rounded-full">Web-ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Actions -->
+    <div class="bg-white rounded-3xl shadow-sm p-5">
+      <h2 class="text-base font-semibold mb-1">Project actions</h2>
+      <p class="text-sm text-slate-500 mb-4">Replace old spreadsheet workflow</p>
+      <div class="space-y-2">
+        <button onclick="alert('Import functionality would go here')" 
+                class="w-full flex items-center gap-2 bg-slate-900 text-white hover:bg-slate-800 px-4 py-3 rounded-2xl text-sm font-medium">
+          <i class="fas fa-upload"></i> Import workbook
+        </button>
+        <button onclick="alert('Export to .q2k / Excel')" 
+                class="w-full flex items-center gap-2 border border-slate-300 hover:bg-slate-50 px-4 py-3 rounded-2xl text-sm font-medium">
+          <i class="fas fa-file-export"></i> Export to .q2k / Excel
+        </button>
+        <button onclick="alert('Download results')" 
+                class="w-full flex items-center gap-2 border border-slate-300 hover:bg-slate-50 px-4 py-3 rounded-2xl text-sm font-medium">
+          <i class="fas fa-download"></i> Download results
+        </button>
+        <button onclick="runSimulation()" 
+                class="w-full flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-2xl text-sm font-medium">
+          <i class="fas fa-play"></i> Run Simulation
+        </button>
+      </div>
+    </div>
+
+    <!-- Run Status -->
+    <div class="bg-white rounded-3xl shadow-sm p-5">
+      <h2 class="text-base font-semibold mb-3">Run Status</h2>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-600">Engine</span>
+          <span class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">Fortran-compatible</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-600">Status</span>
+          <span id="statusBadge" class="px-3 py-1 text-xs bg-amber-100 text-amber-700 rounded-full font-medium">Ready</span>
+        </div>
+        <p class="text-xs text-slate-500">React + API + Model Runner (Recommended)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="space-y-6">
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div class="bg-white rounded-3xl shadow-sm p-5 card">
+        <div class="flex justify-between">
+          <div>
+            <div class="text-sm text-slate-500">River Length</div>
+            <div class="text-3xl font-semibold mt-1">5.71 km</div>
+            <div class="text-xs text-slate-500 mt-1">From reach setup</div>
+          </div>
+          <div class="text-blue-600"><i class="fas fa-map text-3xl"></i></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-3xl shadow-sm p-5 card">
+        <div class="flex justify-between">
+          <div>
+            <div class="text-sm text-slate-500">Elements</div>
+            <div class="text-3xl font-semibold mt-1">11</div>
+            <div class="text-xs text-slate-500 mt-1">Computational units</div>
+          </div>
+          <div class="text-emerald-600"><i class="fas fa-database text-3xl"></i></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-3xl shadow-sm p-5 card">
+        <div class="flex justify-between">
+          <div>
+            <div class="text-sm text-slate-500">Total Inflow</div>
+            <div class="text-3xl font-semibold mt-1">2.81 m³/s</div>
+            <div class="text-xs text-slate-500 mt-1">Headwater + sources</div>
+          </div>
+          <div class="text-orange-600"><i class="fas fa-flask text-3xl"></i></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-3xl shadow-sm p-5 card">
+        <div class="flex justify-between">
+          <div>
+            <div class="text-sm text-slate-500">Run Readiness</div>
+            <div id="runStatus" class="text-3xl font-semibold mt-1 text-emerald-600">Ready</div>
+            <div class="text-xs text-slate-500 mt-1">Prototype state</div>
+          </div>
+          <div class="text-emerald-600"><i class="fas fa-check-circle text-3xl"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
+      <div class="p-6 border-b">
+        <h1 class="text-2xl font-semibold">QUAL2K Workspace</h1>
+        <p class="text-slate-500">Modern interface for river water quality modeling</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="px-6 pt-4 border-b">
+        <div class="flex flex-wrap gap-1 text-sm" id="tabButtons">
+          <button onclick="switchTab(0)" class="tab-button px-5 py-3 font-medium rounded-t-2xl tab-active" data-tab="0">General</button>
+          <button onclick="switchTab(1)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="1">Headwater</button>
+          <button onclick="switchTab(2)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="2">Reach</button>
+          <button onclick="switchTab(3)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="3">Loads</button>
+          <button onclick="switchTab(4)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="4">Light & Heat</button>
+          <button onclick="switchTab(5)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="5">Results</button>
+        </div>
+      </div>
+
+      <!-- Tab Contents -->
+      <div class="p-6" id="tabContents">
+
+        <!-- General Tab -->
+        <div id="tab-0" class="tab-content">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-slate-50 border rounded-2xl p-6">
+              <h3 class="font-semibold mb-4 flex items-center gap-2"><i class="fas fa-cog"></i> Project Metadata</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div><strong>System ID:</strong> System 2.1</div>
+                <div><strong>River Name:</strong> Boulder Creek</div>
+                <div><strong>Date:</strong> Sep 21, 1987</div>
+                <div><strong>UTC Offset:</strong> -7 hours</div>
+                <div><strong>Calculation Step:</strong> 0.1 hours</div>
+                <div><strong>Final Time:</strong> 30 days</div>
+              </div>
+            </div>
+            <div class="bg-slate-50 border rounded-2xl p-6">
+              <h3 class="font-semibold mb-4">Simulation Controls</h3>
+              <div class="text-sm space-y-2">
+                <div><strong>Integration Method:</strong> Euler</div>
+                <div><strong>pH Method:</strong> Brent</div>
+                <div><strong>Time Zone:</strong> Mountain Standard Time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Headwater Tab -->
+        <div id="tab-1" class="tab-content hidden">
+          <div class="bg-white border rounded-2xl overflow-hidden">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-100">
+                <tr>
+                  <th class="p-3 text-left">Label</th>
+                  <th class="p-3 text-left">Reach</th>
+                  <th class="p-3 text-left">Flow (m³/s)</th>
+                  <th class="p-3 text-left">Elevation (m)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t">
+                  <td class="p-3">Mainstem headwater</td>
+                  <td class="p-3">1</td>
+                  <td class="p-3">0.72</td>
+                  <td class="p-3">1562</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reach Tab -->
+        <div id="tab-2" class="tab-content hidden">
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div class="bg-white border rounded-2xl p-6">
+              <h3 class="font-semibold mb-4">Reach Editor</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-slate-100">
+                      <th class="p-3">Reach</th>
+                      <th class="p-3">Label</th>
+                      <th class="p-3">Length (km)</th>
+                      <th class="p-3">Elements</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-t"><td class="p-3">1</td><td class="p-3">MP 0.4</td><td class="p-3">0.65</td><td class="p-3">2</td></tr>
+                    <tr class="border-t"><td class="p-3">2</td><td class="p-3">MP 0.9</td><td class="p-3">3.67</td><td class="p-3">7</td></tr>
+                    <tr class="border-t"><td class="p-3">3</td><td class="p-3">MP 3.7</td><td class="p-3">1.39</td><td class="p-3">2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="bg-white border rounded-2xl p-6 flex flex-col items-center justify-center text-center h-full min-h-[320px]">
+              <i class="fas fa-map text-6xl text-slate-300 mb-4"></i>
+              <p class="font-medium">River Network Preview</p>
+              <p class="text-slate-500 text-sm mt-2">Interactive GIS view coming soon</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loads Tab -->
+        <div id="tab-3" class="tab-content hidden">
+          <h3 class="font-semibold mb-4">Point & Diffuse Sources</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p class="text-sm font-medium mb-2">Point Sources</p>
+              <div class="bg-white border rounded-2xl p-4 text-sm space-y-2">
+                <div>Boulder WWTP — 1.0 m³/s @ 13.41 km</div>
+                <div>Return Flow — 0.59 m³/s @ 9.07 km</div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium mb-2">Diffuse Sources (Groundwater)</p>
+              <div class="bg-white border rounded-2xl p-4 text-sm space-y-2">
+                <div>Groundwater 1 — 0.2574 m³/s</div>
+                <div>Groundwater 2 — 0.2426 m³/s</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Light & Heat Tab -->
+        <div id="tab-4" class="tab-content hidden">
+          <div class="bg-white border rounded-2xl p-6">
+            <h3 class="font-semibold mb-4 flex items-center gap-2"><i class="fas fa-sun"></i> Light and Heat Settings</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+              <div>PAR: <strong>0.47</strong></div>
+              <div>Background Extinction: <strong>0.2 /m</strong></div>
+              <div>Solar Model: <strong>Bras</strong></div>
+              <div>Longwave Model: <strong>Brutsaert</strong></div>
+              <div>Wind Function: <strong>Brady et al.</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="tab-5" class="tab-content">
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <!-- Longitudinal Chart -->
+            <div class="bg-white border rounded-2xl p-6">
+              <h3 class="font-semibold mb-4">Longitudinal Profile</h3>
+              <canvas id="longitudinalChart" height="280"></canvas>
+            </div>
+
+            <!-- Diel Chart -->
+            <div class="bg-white border rounded-2xl p-6">
+              <h3 class="font-semibold mb-4">Diel Variation (Daily Cycle)</h3>
+              <canvas id="dielChart" height="280"></canvas>
+            </div>
+
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Hydraulics</div>
+            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Temperature</div>
+            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Dissolved Oxygen</div>
+            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">CBOD</div>
+            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Nutrients (N/P)</div>
+            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">pH & Algae</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+function switchTab(tabIndex) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('tab-active'));
+  
+  document.getElementById(`tab-${tabIndex}`).classList.remove('hidden');
+  document.querySelector(`[data-tab="${tabIndex}"]`).classList.add('tab-active');
+}
+
+// Run Simulation
+function runSimulation() {
+  const statusBadge = document.getElementById('statusBadge');
+  const runStatus = document.getElementById('runStatus');
+  
+  statusBadge.textContent = "Running...";
+  statusBadge.className = "px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full font-medium";
+  
+  setTimeout(() => {
+    statusBadge.textContent = "Completed";
+    statusBadge.className = "px-3 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-full font-medium";
+    runStatus.textContent = "Completed";
+    runStatus.className = "text-3xl font-semibold mt-1 text-emerald-600";
+    
+    alert("✅ Simulation completed successfully!\n\nResults are now available in the Results tab.");
+  }, 1500);
+}
+
+// Initialize Charts
+window.onload = function() {
+  // Longitudinal Chart
+  new Chart(document.getElementById('longitudinalChart'), {
+    type: 'line',
+    data: {
+      labels: [0, 2, 4, 6, 8, 10, 12],
+      datasets: [
+        { label: 'Flow (m³/s)', data: [0.72, 1.21, 1.49, 1.76, 1.93, 2.10, 2.18], borderColor: '#3b82f6', tension: 0.3 },
+        { label: 'Temp (°C)', data: [17.2, 18.0, 18.6, 18.1, 17.4, 16.9, 16.5], borderColor: '#f59e0b', tension: 0.3 },
+        { label: 'DO (mg/L)', data: [8.4, 7.8, 7.2, 7.6, 8.1, 8.5, 8.8], borderColor: '#10b981', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: { y: { beginAtZero: false } }
+    }
+  });
+
+  // Diel Chart
+  new Chart(document.getElementById('dielChart'), {
+    type: 'line',
+    data: {
+      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+      datasets: [
+        { label: 'Temperature (°C)', data: [16.3, 15.9, 17.1, 19.4, 20.2, 18.3, 16.8], borderColor: '#f59e0b', tension: 0.4 },
+        { label: 'DO (mg/L)', data: [8.7, 8.4, 8.1, 7.8, 7.6, 8.0, 8.5], borderColor: '#10b981', tension: 0.4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } }
+    }
+  });
+
+  // Show first tab by default
+  switchTab(0);
+};
+</script>
+
+</body>
+</html>
