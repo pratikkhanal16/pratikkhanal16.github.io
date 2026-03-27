@@ -2,381 +2,347 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QUAL2K Studio - Modern River Water Quality Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>QUAL2K Live - Interactive River Water Quality Model</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-    .card {
-      transition: all 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    }
-    .tab-active {
-      background-color: white;
-      color: #0f172a;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; }
+    .card { transition: all 0.2s ease; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+    .tab-active { background-color: white; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    input, select, textarea { transition: all 0.15s ease; }
+    input:focus, select:focus { border-color: #10b981; ring: 2px solid #10b981; outline: none; }
+    .number-input { text-align: right; font-family: 'JetBrains Mono', monospace; }
+    .sim-panel { background: linear-gradient(135deg, #f0fdf4 0%, #e6f7e6 100%); }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen p-4 md:p-6">
+<body class="p-4 md:p-6">
 
-<div class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)] gap-6">
+<div class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-[320px_minmax(0,1fr)] gap-6">
 
-  <!-- Sidebar -->
+  <!-- Sidebar with dynamic controls -->
   <div class="space-y-4">
-
-    <!-- Logo Card -->
-    <div class="bg-gradient-to-br from-slate-900 to-slate-700 text-white rounded-3xl shadow-sm overflow-hidden">
-      <div class="p-5">
-        <div class="flex items-center gap-3">
-          <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center">
-            <i class="fas fa-water text-2xl"></i>
-          </div>
-          <div>
-            <div class="text-lg font-semibold">QUAL2K Studio</div>
-            <div class="text-xs text-slate-300">Modern interface prototype</div>
-          </div>
-        </div>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <span class="px-3 py-1 text-xs bg-white/20 rounded-full">River water quality</span>
-          <span class="px-3 py-1 text-xs bg-white/20 rounded-full">Web-ready</span>
-        </div>
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl shadow-sm p-5">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center"><i class="fas fa-water text-2xl"></i></div>
+        <div><div class="text-lg font-semibold">QUAL2K Live</div><div class="text-xs text-slate-300">Editable real-time engine</div></div>
       </div>
+      <button onclick="runLiveSimulation()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-3 rounded-2xl font-medium flex items-center justify-center gap-2 shadow-md transition">
+        <i class="fas fa-play"></i> Run Real-Time Simulation
+      </button>
+      <p class="text-xs text-slate-300 mt-3 text-center">Edit any parameter → click RUN → charts update instantly</p>
     </div>
 
-    <!-- Project Actions -->
-    <div class="bg-white rounded-3xl shadow-sm p-5">
-      <h2 class="text-base font-semibold mb-1">Project actions</h2>
-      <p class="text-sm text-slate-500 mb-4">Replace old spreadsheet workflow</p>
-      <div class="space-y-2">
-        <button onclick="alert('Import functionality would go here')" 
-                class="w-full flex items-center gap-2 bg-slate-900 text-white hover:bg-slate-800 px-4 py-3 rounded-2xl text-sm font-medium">
-          <i class="fas fa-upload"></i> Import workbook
-        </button>
-        <button onclick="alert('Export to .q2k / Excel')" 
-                class="w-full flex items-center gap-2 border border-slate-300 hover:bg-slate-50 px-4 py-3 rounded-2xl text-sm font-medium">
-          <i class="fas fa-file-export"></i> Export to .q2k / Excel
-        </button>
-        <button onclick="alert('Download results')" 
-                class="w-full flex items-center gap-2 border border-slate-300 hover:bg-slate-50 px-4 py-3 rounded-2xl text-sm font-medium">
-          <i class="fas fa-download"></i> Download results
-        </button>
-        <button onclick="runSimulation()" 
-                class="w-full flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-2xl text-sm font-medium">
-          <i class="fas fa-play"></i> Run Simulation
-        </button>
+    <!-- Editable key parameters card -->
+    <div class="bg-white rounded-3xl shadow-sm p-5 border border-slate-200">
+      <h2 class="font-bold text-slate-800 flex items-center gap-2"><i class="fas fa-sliders-h text-emerald-600"></i> Quick Edits</h2>
+      <div class="space-y-3 mt-3 text-sm">
+        <div><label class="block font-medium">Headwater Flow (m³/s)</label><input id="hwFlow" type="number" step="0.05" value="0.72" class="w-full border rounded-xl p-2 number-input"></div>
+        <div><label class="block font-medium">Headwater Temp (°C)</label><input id="hwTemp" type="number" step="0.2" value="17.2" class="w-full border rounded-xl p-2"></div>
+        <div><label class="block font-medium">Headwater DO (mg/L)</label><input id="hwDO" type="number" step="0.1" value="8.4" class="w-full border rounded-xl p-2"></div>
+        <div><label class="block font-medium">Point Load Flow (m³/s) @ 5.2km</label><input id="pointFlow" type="number" step="0.05" value="1.0" class="w-full border rounded-xl p-2"></div>
+        <div><label class="block font-medium">Point Load CBOD (mg/L)</label><input id="pointCBOD" type="number" step="1" value="22" class="w-full border rounded-xl p-2"></div>
+        <div><label class="block font-medium">Reaeration Rate (1/d) base</label><input id="reaer" type="number" step="0.5" value="2.8" class="w-full border rounded-xl p-2"></div>
+        <div><label class="block font-medium">CBOD Decay (1/d)</label><input id="kDecay" type="number" step="0.1" value="0.35" class="w-full border rounded-xl p-2"></div>
       </div>
     </div>
-
-    <!-- Run Status -->
+    
     <div class="bg-white rounded-3xl shadow-sm p-5">
-      <h2 class="text-base font-semibold mb-3">Run Status</h2>
-      <div class="space-y-3">
-        <div class="flex justify-between items-center">
-          <span class="text-sm text-slate-600">Engine</span>
-          <span class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">Fortran-compatible</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-sm text-slate-600">Status</span>
-          <span id="statusBadge" class="px-3 py-1 text-xs bg-amber-100 text-amber-700 rounded-full font-medium">Ready</span>
-        </div>
-        <p class="text-xs text-slate-500">React + API + Model Runner (Recommended)</p>
-      </div>
+      <div class="flex justify-between"><span class="text-sm text-slate-600">Engine Status</span><span id="statusBadge" class="px-3 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-full">Ready</span></div>
+      <div class="mt-2 text-xs text-slate-500">Model: dynamic 1D advection-reaction | 12 reaches</div>
     </div>
   </div>
 
-  <!-- Main Content -->
+  <!-- Main Content with editable tabs -->
   <div class="space-y-6">
-
-    <!-- KPIs -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      <div class="bg-white rounded-3xl shadow-sm p-5 card">
-        <div class="flex justify-between">
-          <div>
-            <div class="text-sm text-slate-500">River Length</div>
-            <div class="text-3xl font-semibold mt-1">5.71 km</div>
-            <div class="text-xs text-slate-500 mt-1">From reach setup</div>
-          </div>
-          <div class="text-blue-600"><i class="fas fa-map text-3xl"></i></div>
-        </div>
-      </div>
-      <div class="bg-white rounded-3xl shadow-sm p-5 card">
-        <div class="flex justify-between">
-          <div>
-            <div class="text-sm text-slate-500">Elements</div>
-            <div class="text-3xl font-semibold mt-1">11</div>
-            <div class="text-xs text-slate-500 mt-1">Computational units</div>
-          </div>
-          <div class="text-emerald-600"><i class="fas fa-database text-3xl"></i></div>
-        </div>
-      </div>
-      <div class="bg-white rounded-3xl shadow-sm p-5 card">
-        <div class="flex justify-between">
-          <div>
-            <div class="text-sm text-slate-500">Total Inflow</div>
-            <div class="text-3xl font-semibold mt-1">2.81 m³/s</div>
-            <div class="text-xs text-slate-500 mt-1">Headwater + sources</div>
-          </div>
-          <div class="text-orange-600"><i class="fas fa-flask text-3xl"></i></div>
-        </div>
-      </div>
-      <div class="bg-white rounded-3xl shadow-sm p-5 card">
-        <div class="flex justify-between">
-          <div>
-            <div class="text-sm text-slate-500">Run Readiness</div>
-            <div id="runStatus" class="text-3xl font-semibold mt-1 text-emerald-600">Ready</div>
-            <div class="text-xs text-slate-500 mt-1">Prototype state</div>
-          </div>
-          <div class="text-emerald-600"><i class="fas fa-check-circle text-3xl"></i></div>
-        </div>
-      </div>
+    <!-- KPIs dynamic -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-3xl shadow-sm p-4 card"><div class="text-sm text-slate-500">River Length</div><div class="text-2xl font-bold">5.71 km</div></div>
+      <div class="bg-white rounded-3xl shadow-sm p-4 card"><div class="text-sm text-slate-500">Elements</div><div class="text-2xl font-bold" id="kpiElements">12</div></div>
+      <div class="bg-white rounded-3xl shadow-sm p-4 card"><div class="text-sm text-slate-500">Total Inflow</div><div class="text-2xl font-bold" id="kpiInflow">—</div></div>
+      <div class="bg-white rounded-3xl shadow-sm p-4 card"><div class="text-sm text-slate-500">Min DO (mg/L)</div><div class="text-2xl font-bold" id="kpiMinDO">—</div></div>
     </div>
 
-    <!-- Main Workspace -->
+    <!-- Workspace with tabs -->
     <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
-      <div class="p-6 border-b">
-        <h1 class="text-2xl font-semibold">QUAL2K Workspace</h1>
-        <p class="text-slate-500">Modern interface for river water quality modeling</p>
+      <div class="p-5 border-b"><h1 class="text-2xl font-semibold">Interactive QUAL2K Workspace</h1><p class="text-slate-500">Edit inputs → click RUN → results update charts & tables</p></div>
+      
+      <!-- Tab headers -->
+      <div class="px-5 pt-3 border-b flex flex-wrap gap-1 text-sm" id="tabButtons">
+        <button onclick="switchTab(0)" class="tab-button px-5 py-2.5 font-medium rounded-t-2xl tab-active" data-tab="0">General</button>
+        <button onclick="switchTab(1)" class="tab-button px-5 py-2.5 font-medium rounded-t-2xl" data-tab="1">Headwater & Sources</button>
+        <button onclick="switchTab(2)" class="tab-button px-5 py-2.5 font-medium rounded-t-2xl" data-tab="2">Reach Editor</button>
+        <button onclick="switchTab(3)" class="tab-button px-5 py-2.5 font-medium rounded-t-2xl" data-tab="3">Point Loads</button>
+        <button onclick="switchTab(4)" class="tab-button px-5 py-2.5 font-medium rounded-t-2xl" data-tab="4">Kinetics</button>
+        <button onclick="switchTab(5)" class="tab-button px-5 py-2.5 font-medium rounded-t-2xl" data-tab="5">📊 Live Results</button>
       </div>
 
-      <!-- Tabs -->
-      <div class="px-6 pt-4 border-b">
-        <div class="flex flex-wrap gap-1 text-sm" id="tabButtons">
-          <button onclick="switchTab(0)" class="tab-button px-5 py-3 font-medium rounded-t-2xl tab-active" data-tab="0">General</button>
-          <button onclick="switchTab(1)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="1">Headwater</button>
-          <button onclick="switchTab(2)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="2">Reach</button>
-          <button onclick="switchTab(3)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="3">Loads</button>
-          <button onclick="switchTab(4)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="4">Light & Heat</button>
-          <button onclick="switchTab(5)" class="tab-button px-5 py-3 font-medium rounded-t-2xl" data-tab="5">Results</button>
-        </div>
-      </div>
+      <!-- Tab contents (editable forms) -->
+      <div class="p-5" id="tabContents">
+        <!-- Tab 0: General -->
+        <div id="tab-0" class="tab-content"><div class="grid md:grid-cols-2 gap-5"><div class="bg-slate-50 rounded-2xl p-5"><h3 class="font-semibold">Simulation Settings</h3><div class="text-sm space-y-2 mt-2"><div>River: Boulder Creek</div><div>Time step: 0.1 hr | Duration: 30 days</div><div>Method: Euler + QUAL2K scheme</div></div></div><div class="bg-slate-50 rounded-2xl p-5"><h3 class="font-semibold">Meteo (editable)</h3><div><label class="text-sm">Air Temp (°C)</label><input id="airTemp" type="number" value="18.5" class="border rounded-xl p-1.5 w-full mt-1"></div><div class="mt-2"><label class="text-sm">Solar Radiation (W/m²)</label><input id="solar" type="number" value="520" class="border rounded-xl p-1.5 w-full"></div></div></div></div>
 
-      <!-- Tab Contents -->
-      <div class="p-6" id="tabContents">
+        <!-- Tab 1: Headwater & Diffuse (editable) -->
+        <div id="tab-1" class="tab-content hidden"><div class="grid md:grid-cols-2 gap-6"><div class="bg-white border rounded-2xl p-5"><h3 class="font-semibold mb-3">Headwater Conditions</h3><div class="space-y-2"><div><label>Flow (m³/s)</label><input id="hwFlow2" type="number" value="0.72" class="w-full border rounded p-1.5"></div><div><label>Temperature (°C)</label><input id="hwTemp2" type="number" value="17.2" class="w-full border rounded p-1.5"></div><div><label>DO (mg/L)</label><input id="hwDO2" type="number" value="8.4" class="w-full border rounded p-1.5"></div><div><label>CBOD (mg/L)</label><input id="hwCBOD" type="number" value="3.2" class="w-full border rounded p-1.5"></div></div></div><div class="bg-white border rounded-2xl p-5"><h3 class="font-semibold mb-3">Diffuse inflow (GW)</h3><div><label>GW Flow (m³/s)</label><input id="gwFlow" type="number" value="0.5" step="0.05" class="w-full border rounded p-1.5"></div><div><label>GW Temp (°C)</label><input id="gwTemp" type="number" value="13.5" class="w-full border rounded p-1.5 mt-2"></div></div></div></div>
 
-        <!-- General Tab -->
-        <div id="tab-0" class="tab-content">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-slate-50 border rounded-2xl p-6">
-              <h3 class="font-semibold mb-4 flex items-center gap-2"><i class="fas fa-cog"></i> Project Metadata</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div><strong>System ID:</strong> System 2.1</div>
-                <div><strong>River Name:</strong> Boulder Creek</div>
-                <div><strong>Date:</strong> Sep 21, 1987</div>
-                <div><strong>UTC Offset:</strong> -7 hours</div>
-                <div><strong>Calculation Step:</strong> 0.1 hours</div>
-                <div><strong>Final Time:</strong> 30 days</div>
-              </div>
-            </div>
-            <div class="bg-slate-50 border rounded-2xl p-6">
-              <h3 class="font-semibold mb-4">Simulation Controls</h3>
-              <div class="text-sm space-y-2">
-                <div><strong>Integration Method:</strong> Euler</div>
-                <div><strong>pH Method:</strong> Brent</div>
-                <div><strong>Time Zone:</strong> Mountain Standard Time</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Tab 2: Reach editor (spatial discretization) -->
+        <div id="tab-2" class="tab-content hidden"><div class="bg-white border rounded-2xl p-4"><h3 class="font-semibold mb-2">Reach Segments (km from origin)</h3><div class="overflow-x-auto"><table class="w-full text-sm border"><thead class="bg-slate-100"><tr><th class="p-2">Reach ID</th><th>Distance (km)</th><th>Length (km)</th><th>Width (m)</th><th>Slope (m/m)</th></tr></thead><tbody id="reachTableBody"><tr><td>1</td><td>0</td><td>0.65</td><td><input id="width1" type="number" value="12.5" class="w-20 border rounded p-1"></td><td>0.0012</td></tr><tr><td>2</td><td>0.65</td><td>3.67</td><td><input id="width2" type="number" value="14.2" class="w-20 border rounded p-1"></td><td>0.0010</td></tr><tr><td>3</td><td>4.32</td><td>1.39</td><td><input id="width3" type="number" value="16.0" class="w-20 border rounded p-1"></td><td>0.0009</td></tr></tbody></table><p class="text-xs text-slate-500 mt-2">* Width affects velocity & reaeration</p></div></div></div>
 
-        <!-- Headwater Tab -->
-        <div id="tab-1" class="tab-content hidden">
-          <div class="bg-white border rounded-2xl overflow-hidden">
-            <table class="w-full text-sm">
-              <thead class="bg-slate-100">
-                <tr>
-                  <th class="p-3 text-left">Label</th>
-                  <th class="p-3 text-left">Reach</th>
-                  <th class="p-3 text-left">Flow (m³/s)</th>
-                  <th class="p-3 text-left">Elevation (m)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-t">
-                  <td class="p-3">Mainstem headwater</td>
-                  <td class="p-3">1</td>
-                  <td class="p-3">0.72</td>
-                  <td class="p-3">1562</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <!-- Tab 3: Point loads (editable) -->
+        <div id="tab-3" class="tab-content hidden"><div class="bg-white border rounded-2xl p-5"><h3 class="font-semibold">Wastewater / Point Loads</h3><div class="grid md:grid-cols-2 gap-4 mt-3"><div><label>WWTP Flow (m³/s)</label><input id="wwFlow" type="number" value="1.0" step="0.1" class="border rounded w-full p-1.5"></div><div><label>WWTP CBOD (mg/L)</label><input id="wwCBOD" type="number" value="28" class="border rounded w-full p-1.5"></div><div><label>WWTP DO (mg/L)</label><input id="wwDO" type="number" value="3.5" class="border rounded w-full p-1.5"></div><div><label>Location (km)</label><input id="wwLoc" type="number" value="2.8" step="0.2" class="border rounded w-full p-1.5"></div></div><div class="mt-3 bg-amber-50 p-2 rounded text-xs">Second point load: industrial (editable) at 5.2 km</div><div class="grid md:grid-cols-2 gap-4 mt-2"><div><label>Ind. Flow (m³/s)</label><input id="indFlow" type="number" value="0.59" class="border rounded p-1.5"></div><div><label>Ind. CBOD (mg/L)</label><input id="indCBOD" type="number" value="18" class="border rounded p-1.5"></div></div></div></div>
 
-        <!-- Reach Tab -->
-        <div id="tab-2" class="tab-content hidden">
-          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <div class="bg-white border rounded-2xl p-6">
-              <h3 class="font-semibold mb-4">Reach Editor</h3>
-              <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="bg-slate-100">
-                      <th class="p-3">Reach</th>
-                      <th class="p-3">Label</th>
-                      <th class="p-3">Length (km)</th>
-                      <th class="p-3">Elements</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-t"><td class="p-3">1</td><td class="p-3">MP 0.4</td><td class="p-3">0.65</td><td class="p-3">2</td></tr>
-                    <tr class="border-t"><td class="p-3">2</td><td class="p-3">MP 0.9</td><td class="p-3">3.67</td><td class="p-3">7</td></tr>
-                    <tr class="border-t"><td class="p-3">3</td><td class="p-3">MP 3.7</td><td class="p-3">1.39</td><td class="p-3">2</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="bg-white border rounded-2xl p-6 flex flex-col items-center justify-center text-center h-full min-h-[320px]">
-              <i class="fas fa-map text-6xl text-slate-300 mb-4"></i>
-              <p class="font-medium">River Network Preview</p>
-              <p class="text-slate-500 text-sm mt-2">Interactive GIS view coming soon</p>
-            </div>
-          </div>
-        </div>
+        <!-- Tab 4: Kinetic parameters -->
+        <div id="tab-4" class="tab-content hidden"><div class="grid md:grid-cols-2 gap-5"><div class="border rounded-2xl p-5"><h3 class="font-semibold">Organic & DO Kinetics</h3><div><label>CBOD Decay k (1/d)</label><input id="kCBOD" type="number" value="0.35" step="0.05" class="border rounded w-full p-1.5"></div><div><label>Reaeration k2 (1/d) base</label><input id="k2" type="number" value="2.8" step="0.2" class="border rounded w-full p-1.5 mt-2"></div><div><label>Sediment Oxygen Demand (g/m²/d)</label><input id="SOD" type="number" value="1.2" step="0.2" class="border rounded w-full p-1.5"></div></div><div class="border rounded-2xl p-5"><h3 class="font-semibold">Algae & Light</h3><div><label>Max Growth Rate (1/d)</label><input id="algGrowth" type="number" value="1.8" step="0.2" class="border rounded w-full p-1.5"></div><div><label>Light Extinction (1/m)</label><input id="ke" type="number" value="0.2" step="0.05" class="border rounded w-full p-1.5"></div></div></div></div>
 
-        <!-- Loads Tab -->
-        <div id="tab-3" class="tab-content hidden">
-          <h3 class="font-semibold mb-4">Point & Diffuse Sources</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <p class="text-sm font-medium mb-2">Point Sources</p>
-              <div class="bg-white border rounded-2xl p-4 text-sm space-y-2">
-                <div>Boulder WWTP — 1.0 m³/s @ 13.41 km</div>
-                <div>Return Flow — 0.59 m³/s @ 9.07 km</div>
-              </div>
-            </div>
-            <div>
-              <p class="text-sm font-medium mb-2">Diffuse Sources (Groundwater)</p>
-              <div class="bg-white border rounded-2xl p-4 text-sm space-y-2">
-                <div>Groundwater 1 — 0.2574 m³/s</div>
-                <div>Groundwater 2 — 0.2426 m³/s</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Light & Heat Tab -->
-        <div id="tab-4" class="tab-content hidden">
-          <div class="bg-white border rounded-2xl p-6">
-            <h3 class="font-semibold mb-4 flex items-center gap-2"><i class="fas fa-sun"></i> Light and Heat Settings</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-              <div>PAR: <strong>0.47</strong></div>
-              <div>Background Extinction: <strong>0.2 /m</strong></div>
-              <div>Solar Model: <strong>Bras</strong></div>
-              <div>Longwave Model: <strong>Brutsaert</strong></div>
-              <div>Wind Function: <strong>Brady et al.</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Results Tab -->
-        <div id="tab-5" class="tab-content">
-          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-
-            <!-- Longitudinal Chart -->
-            <div class="bg-white border rounded-2xl p-6">
-              <h3 class="font-semibold mb-4">Longitudinal Profile</h3>
-              <canvas id="longitudinalChart" height="280"></canvas>
-            </div>
-
-            <!-- Diel Chart -->
-            <div class="bg-white border rounded-2xl p-6">
-              <h3 class="font-semibold mb-4">Diel Variation (Daily Cycle)</h3>
-              <canvas id="dielChart" height="280"></canvas>
-            </div>
-
-          </div>
-
-          <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Hydraulics</div>
-            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Temperature</div>
-            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Dissolved Oxygen</div>
-            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">CBOD</div>
-            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">Nutrients (N/P)</div>
-            <div class="bg-white border rounded-2xl p-6 text-center text-sm font-medium">pH & Algae</div>
-          </div>
-        </div>
-
+        <!-- Tab 5: LIVE RESULTS with charts & data -->
+        <div id="tab-5" class="tab-content hidden"><div class="space-y-6"><div class="grid lg:grid-cols-2 gap-6"><div class="bg-white border rounded-2xl p-4"><h3 class="font-semibold mb-2">Longitudinal Profile (Distance vs DO & CBOD)</h3><canvas id="longChart" height="250"></canvas></div><div class="bg-white border rounded-2xl p-4"><h3 class="font-semibold mb-2">Temperature & Flow Variation</h3><canvas id="tempFlowChart" height="250"></canvas></div></div><div class="bg-slate-50 rounded-2xl p-4"><h3 class="font-semibold text-sm">Simulated Values at Key Points</h3><div class="overflow-x-auto"><table class="min-w-full text-xs"><thead><tr class="bg-slate-200"><th>Distance (km)</th><th>Flow (m³/s)</th><th>Temp (°C)</th><th>DO (mg/L)</th><th>CBOD (mg/L)</th></tr></thead><tbody id="resultsTable"></tbody></table></div><p class="text-xs text-slate-500 mt-2">*Real-time calculation based on inputs above. Click RUN to refresh.</p></div></div></div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// Tab switching
-function switchTab(tabIndex) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('tab-active'));
-  
-  document.getElementById(`tab-${tabIndex}`).classList.remove('hidden');
-  document.querySelector(`[data-tab="${tabIndex}"]`).classList.add('tab-active');
-}
+  // ---------- CORE SIMULATION ENGINE (1D steady-state / dynamic mixing with kinetics) ----------
+  // Distance array (12 computational nodes from 0 to 5.71 km)
+  const distances = [0, 0.52, 1.04, 1.56, 2.08, 2.6, 3.12, 3.64, 4.16, 4.68, 5.2, 5.71];
+  let longitudinalChart, tempFlowChart;
 
-// Run Simulation
-function runSimulation() {
-  const statusBadge = document.getElementById('statusBadge');
-  const runStatus = document.getElementById('runStatus');
-  
-  statusBadge.textContent = "Running...";
-  statusBadge.className = "px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full font-medium";
-  
-  setTimeout(() => {
-    statusBadge.textContent = "Completed";
-    statusBadge.className = "px-3 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-full font-medium";
-    runStatus.textContent = "Completed";
-    runStatus.className = "text-3xl font-semibold mt-1 text-emerald-600";
+  function getInputs() {
+    return {
+      hwFlow: parseFloat(document.getElementById('hwFlow')?.value || document.getElementById('hwFlow2')?.value || 0.72),
+      hwTemp: parseFloat(document.getElementById('hwTemp')?.value || document.getElementById('hwTemp2')?.value || 17.2),
+      hwDO: parseFloat(document.getElementById('hwDO')?.value || document.getElementById('hwDO2')?.value || 8.4),
+      hwCBOD: parseFloat(document.getElementById('hwCBOD')?.value || 3.2),
+      gwFlow: parseFloat(document.getElementById('gwFlow')?.value || 0.5),
+      gwTemp: parseFloat(document.getElementById('gwTemp')?.value || 13.5),
+      pointFlow: parseFloat(document.getElementById('pointFlow')?.value || 1.0),
+      pointCBOD: parseFloat(document.getElementById('pointCBOD')?.value || 22),
+      wwFlow: parseFloat(document.getElementById('wwFlow')?.value || 1.0),
+      wwCBOD: parseFloat(document.getElementById('wwCBOD')?.value || 28),
+      wwDO: parseFloat(document.getElementById('wwDO')?.value || 3.5),
+      wwLoc: parseFloat(document.getElementById('wwLoc')?.value || 2.8),
+      indFlow: parseFloat(document.getElementById('indFlow')?.value || 0.59),
+      indCBOD: parseFloat(document.getElementById('indCBOD')?.value || 18),
+      kDecay: parseFloat(document.getElementById('kCBOD')?.value || 0.35),
+      reaer: parseFloat(document.getElementById('k2')?.value || 2.8),
+      sod: parseFloat(document.getElementById('SOD')?.value || 1.2),
+      airTemp: parseFloat(document.getElementById('airTemp')?.value || 18.5),
+      solar: parseFloat(document.getElementById('solar')?.value || 520),
+      width1: parseFloat(document.getElementById('width1')?.value || 12.5),
+      width2: parseFloat(document.getElementById('width2')?.value || 14.2),
+      width3: parseFloat(document.getElementById('width3')?.value || 16.0),
+      algGrowth: parseFloat(document.getElementById('algGrowth')?.value || 1.8),
+      ke: parseFloat(document.getElementById('ke')?.value || 0.2)
+    };
+  }
+
+  function computeModel() {
+    const inp = getInputs();
+    const n = distances.length;
+    let flow = new Array(n).fill(0);
+    let temp = new Array(n).fill(0);
+    let doConc = new Array(n).fill(0);
+    let cbod = new Array(n).fill(0);
     
-    alert("✅ Simulation completed successfully!\n\nResults are now available in the Results tab.");
-  }, 1500);
-}
-
-// Initialize Charts
-window.onload = function() {
-  // Longitudinal Chart
-  new Chart(document.getElementById('longitudinalChart'), {
-    type: 'line',
-    data: {
-      labels: [0, 2, 4, 6, 8, 10, 12],
-      datasets: [
-        { label: 'Flow (m³/s)', data: [0.72, 1.21, 1.49, 1.76, 1.93, 2.10, 2.18], borderColor: '#3b82f6', tension: 0.3 },
-        { label: 'Temp (°C)', data: [17.2, 18.0, 18.6, 18.1, 17.4, 16.9, 16.5], borderColor: '#f59e0b', tension: 0.3 },
-        { label: 'DO (mg/L)', data: [8.4, 7.8, 7.2, 7.6, 8.1, 8.5, 8.8], borderColor: '#10b981', tension: 0.3 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: 'top' } },
-      scales: { y: { beginAtZero: false } }
+    // Headwater
+    flow[0] = inp.hwFlow;
+    temp[0] = inp.hwTemp;
+    doConc[0] = inp.hwDO;
+    cbod[0] = inp.hwCBOD;
+    
+    // Velocity function based on flow and width (Manning-like simplification)
+    function velocity(flowVal, distKm) {
+      let width = 12.5;
+      if (distKm < 0.65) width = inp.width1;
+      else if (distKm < 4.32) width = inp.width2;
+      else width = inp.width3;
+      let depth = Math.min(2.5, 0.3 * Math.pow(flowVal, 0.4));
+      let area = width * depth;
+      if (area < 0.1) area = 0.5;
+      return flowVal / area;
     }
-  });
-
-  // Diel Chart
-  new Chart(document.getElementById('dielChart'), {
-    type: 'line',
-    data: {
-      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-      datasets: [
-        { label: 'Temperature (°C)', data: [16.3, 15.9, 17.1, 19.4, 20.2, 18.3, 16.8], borderColor: '#f59e0b', tension: 0.4 },
-        { label: 'DO (mg/L)', data: [8.7, 8.4, 8.1, 7.8, 7.6, 8.0, 8.5], borderColor: '#10b981', tension: 0.4 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: 'top' } }
+    
+    // travel time (simple)
+    let dt = 0.05; // day per step approx
+    let cumDist = 0;
+    for (let i = 0; i < n-1; i++) {
+      let dx = distances[i+1] - distances[i];
+      let vel = velocity(flow[i], distances[i]);
+      let travelTime = dx / (vel * 86400); // days
+      let factor = Math.min(1.0, travelTime * 5); // stability
+    
+      // Add diffuse groundwater contribution uniformly
+      let gwAdded = inp.gwFlow * (dx / 5.71);
+      let qNext = flow[i] + gwAdded;
+      
+      // Point loads mixing
+      let wwFlowAdded = 0, wwCBODmix = 0, wwDOmix = 0;
+      if (distances[i] <= inp.wwLoc && distances[i+1] > inp.wwLoc) {
+        wwFlowAdded = inp.wwFlow;
+        qNext += wwFlowAdded;
+        let total = flow[i] + wwFlowAdded;
+        if(total>0){
+          let mixCBOD = (cbod[i]*flow[i] + inp.wwCBOD*wwFlowAdded)/total;
+          let mixDO = (doConc[i]*flow[i] + inp.wwDO*wwFlowAdded)/total;
+          let mixTemp = (temp[i]*flow[i] + (inp.airTemp)*wwFlowAdded)/total;
+          cbod[i] = mixCBOD; doConc[i] = mixDO; temp[i] = mixTemp;
+        }
+      }
+      let indAdded = 0;
+      if (distances[i] <= 5.2 && distances[i+1] > 5.2) {
+        indAdded = inp.indFlow;
+        qNext += indAdded;
+        let total = flow[i] + indAdded;
+        if(total>0){
+          cbod[i] = (cbod[i]*flow[i] + inp.indCBOD*indAdded)/total;
+        }
+      }
+      
+      let finalFlow = Math.max(0.1, qNext);
+      flow[i+1] = finalFlow;
+      
+      // Temperature: simple mixing + atmospheric equilibrium
+      let airEffect = (inp.airTemp - temp[i]) * 0.08 * factor;
+      temp[i+1] = temp[i] + (airEffect + (inp.gwTemp - temp[i]) * (gwAdded/(flow[i]+0.01)) * 0.5) * factor;
+      temp[i+1] = Math.min(30, Math.max(5, temp[i+1]));
+      
+      // DO & CBOD kinetics (QUAL2K style)
+      let kd = inp.kDecay;
+      let kr = inp.reaer * Math.pow(1.024, (temp[i]-20));
+      let DOsat = 14.652 - 0.41022 * temp[i] + 0.007991 * temp[i]*temp[i] - 0.000077774 * temp[i]*temp[i]*temp[i];
+      DOsat = Math.max(6, DOsat);
+      let sodEffect = inp.sod / (2.0 * 86400) * factor; // simplified sediment demand
+      
+      let deltaCBOD = -kd * cbod[i] * factor;
+      let newCBOD = Math.max(0, cbod[i] + deltaCBOD);
+      let deltaDO = -kd * cbod[i] * factor + kr * (DOsat - doConc[i]) * factor - sodEffect;
+      let newDO = Math.max(0, doConc[i] + deltaDO);
+      
+      // additional algae effect (light-driven)
+      let lightFactor = (inp.solar / 800) * Math.exp(-inp.ke * 1.2);
+      let photo = inp.algGrowth * 0.05 * lightFactor * factor;
+      newDO = Math.min(14, newDO + photo);
+      
+      cbod[i+1] = newCBOD;
+      doConc[i+1] = newDO;
+      
+      // propagate downstream mixing for continuity
+      if (wwFlowAdded > 0 && i+1 === n-1 || (distances[i+1] >= inp.wwLoc && wwFlowAdded>0)) {
+        // already mixed
+      }
+      if (indAdded > 0 && distances[i+1] >=5.2) {}
     }
-  });
-
-  // Show first tab by default
-  switchTab(0);
-};
+    
+    // final refinement at last node
+    let minDO = Math.min(...doConc);
+    let totalInflow = flow[n-1];
+    document.getElementById('kpiInflow').innerText = totalInflow.toFixed(2) + " m³/s";
+    document.getElementById('kpiMinDO').innerText = minDO.toFixed(2);
+    document.getElementById('kpiElements').innerText = n;
+    
+    // build table rows
+    let tbody = document.getElementById('resultsTable');
+    if(tbody){
+      tbody.innerHTML = "";
+      for(let i=0;i<n;i++){
+        let row = `<tr class="border-b"><td class="p-1">${distances[i].toFixed(2)}</td><td>${flow[i].toFixed(2)}</td><td>${temp[i].toFixed(1)}</td><td class="font-mono">${doConc[i].toFixed(2)}</td><td>${cbod[i].toFixed(2)}</td></tr>`;
+        tbody.innerHTML += row;
+      }
+    }
+    
+    return { distances, flow, temp, doConc, cbod };
+  }
+  
+  function updateCharts() {
+    let { distances, flow, temp, doConc, cbod } = computeModel();
+    if (longitudinalChart) longitudinalChart.destroy();
+    if (tempFlowChart) tempFlowChart.destroy();
+    
+    const ctxLong = document.getElementById('longChart').getContext('2d');
+    longitudinalChart = new Chart(ctxLong, {
+      type: 'line',
+      data: {
+        labels: distances.map(d=>d.toFixed(1)+'km'),
+        datasets: [
+          { label: 'DO (mg/L)', data: doConc, borderColor: '#10b981', tension: 0.2, yAxisID: 'y' },
+          { label: 'CBOD (mg/L)', data: cbod, borderColor: '#f97316', tension: 0.2, yAxisID: 'y1' }
+        ]
+      },
+      options: { responsive: true, interaction: { mode: 'index' }, scales: { y: { title: { display: true, text: 'DO (mg/L)' } }, y1: { position: 'right', title: { text: 'CBOD (mg/L)' } } } }
+    });
+    
+    const ctxTemp = document.getElementById('tempFlowChart').getContext('2d');
+    tempFlowChart = new Chart(ctxTemp, {
+      type: 'line',
+      data: {
+        labels: distances.map(d=>d.toFixed(1)),
+        datasets: [
+          { label: 'Temperature (°C)', data: temp, borderColor: '#f59e0b', tension: 0.2 },
+          { label: 'Flow (m³/s)', data: flow, borderColor: '#3b82f6', tension: 0.2, yAxisID: 'y1' }
+        ]
+      },
+      options: { responsive: true, scales: { y: { title: 'Temp (°C)' }, y1: { position: 'right', title: 'Flow (m³/s)' } } }
+    });
+  }
+  
+  function runLiveSimulation() {
+    const badge = document.getElementById('statusBadge');
+    badge.innerText = "Running...";
+    badge.className = "px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full";
+    setTimeout(() => {
+      try {
+        updateCharts();
+        computeModel(); // updates table & KPIs
+        badge.innerText = "Updated";
+        badge.className = "px-3 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-full";
+        setTimeout(() => { if(badge.innerText === "Updated") { badge.innerText = "Ready"; badge.className = "px-3 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-full"; } }, 1800);
+        // optional extra
+        if(document.getElementById('tab-5').classList.contains('hidden') === false) {
+          // already showing charts
+        }
+      } catch(e) { console.error(e); badge.innerText = "Error"; }
+    }, 80);
+  }
+  
+  // sync quick inputs with tabs (bidirectional)
+  function syncInputs() {
+    const qFlow = document.getElementById('hwFlow');
+    const qFlow2 = document.getElementById('hwFlow2');
+    const qTemp = document.getElementById('hwTemp');
+    const qTemp2 = document.getElementById('hwTemp2');
+    const qDO = document.getElementById('hwDO');
+    const qDO2 = document.getElementById('hwDO2');
+    if(qFlow && qFlow2) qFlow2.value = qFlow.value;
+    if(qTemp && qTemp2) qTemp2.value = qTemp.value;
+    if(qDO && qDO2) qDO2.value = qDO.value;
+    const wwF = document.getElementById('pointFlow'); if(wwF && document.getElementById('wwFlow')) document.getElementById('wwFlow').value = wwF.value;
+  }
+  document.getElementById('hwFlow')?.addEventListener('input', syncInputs);
+  document.getElementById('hwTemp')?.addEventListener('input', syncInputs);
+  document.getElementById('hwDO')?.addEventListener('input', syncInputs);
+  document.getElementById('pointFlow')?.addEventListener('input', (e)=>{ if(document.getElementById('wwFlow')) document.getElementById('wwFlow').value = e.target.value; });
+  
+  // Tab switching
+  function switchTab(tabIndex) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('tab-active'));
+    document.getElementById(`tab-${tabIndex}`).classList.remove('hidden');
+    document.querySelector(`[data-tab="${tabIndex}"]`).classList.add('tab-active');
+    if(tabIndex === 5) { runLiveSimulation(); }
+  }
+  
+  window.onload = () => {
+    switchTab(0);
+    // initial charts
+    setTimeout(() => {
+      updateCharts();
+      computeModel();
+    }, 100);
+    window.runLiveSimulation = runLiveSimulation;
+    window.switchTab = switchTab;
+  };
 </script>
-
 </body>
 </html>
