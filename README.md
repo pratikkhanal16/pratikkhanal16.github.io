@@ -9,3 +9,5 @@ Content is in `content.json`; the CV and GitHub portrait are under `assets/`. Pr
 Content reflects the supplied CV, public GitHub repositories and the ongoing research description supplied in October 2026. No numerical performance claims are inferred.
 
 Includes Nan River basin thesis research, HydroEVT, the GeoAI term report, and collaborative QUAL2K/MODFLOW reports. Nan River model outputs and forecast skill are described as proposed work, without claiming completed validation.
+
+Bhotekoshi-Trishuli report attribution: AIT-DPMM technical report, featured on UNDRR PreventionWeb. HBV term-report completion is supplied by the portfolio owner; no unverified performance claims are included.

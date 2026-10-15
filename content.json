@@ -26,12 +26,12 @@
       "HydroEVT | L-moments | Extreme value analysis | Bootstrap | Streamlit"
     ],
     [
-      "Bhotekoshi flood study, Nepal",
-      "Project experience",
+      "Bhotekoshi-Trishuli disaster reconstruction, Nepal",
+      "Published AIT technical report | Featured on UNDRR PreventionWeb | 2026",
       "Floods",
-      "Worked on flooding in the Bhotekoshi basin, Nepal, as part of a broader focus on Himalayan flood hazards and water resources. Detailed methods and project results are not yet included in the public portfolio.",
-      "",
-      "Himalayan hydrology | Flood hazards"
+      "Co-authored Beyond a flash flood, an AIT technical report reconstructing the Bhotekoshi-Trishuli disaster. The study integrates climate and seismic records, satellite imagery, field observations and RAMMS-HEC-RAS modelling to examine a cascading rock-ice avalanche and downstream flood disaster, with recommendations for multi-hazard early warning and transboundary preparedness.",
+      "https://www.preventionweb.net/publication/documents-and-publications/beyond-flash-flood-bhotekoshi-trishuli-disaster-nepal",
+      "RAMMS | HEC-RAS 2D | ERA5-Land | Satellite analysis | Multi-hazard risk"
     ],
     [
       "Dhap & Nagmati dam-break analysis",
@@ -88,6 +88,14 @@
       "Co-authored QUAL2K and MODFLOW group reports with Mohammed Yameen and Farzeen Khan. The QUAL2K project examined dissolved oxygen, CBOD loading and interventions including weirs and riparian shading. The MODFLOW project compared steady-state groundwater heads, water balances and wetland discharge under alternative boundary conditions and pumping scenarios.",
       "",
       "QUAL2K | MODFLOW | Dissolved oxygen | Groundwater flow | Scenario analysis"
+    ],
+    [
+      "HBV rainfall-runoff modelling",
+      "Academic term report | AIT",
+      "Water systems",
+      "Completed a term report applying the HBV rainfall-runoff model.",
+      "",
+      "HBV | Rainfall-runoff modelling | Hydrology"
     ]
   ],
   "experience": [
@@ -131,6 +139,11 @@
       "Evaluating the Alignment between Intended Project Durations and Standard Time Cost Models: A Comparative Analysis in Basic Hospital Construction Projects in Nepal",
       "Dahal, D., et al. | International Journal on Engineering Technology 1(2), 211-229 | 2024",
       "10.3126/injet.v1i2.66688"
+    ],
+    [
+      "Beyond a flash flood: The Bhotekoshi-Trishuli disaster in Nepal - Preliminary insights, lessons learned and the way forward",
+      "Khanal, P., et al. | AIT-DPMM technical report, 59 pp. | 2026 | Featured on UNDRR PreventionWeb",
+      "https://www.preventionweb.net/publication/documents-and-publications/beyond-flash-flood-bhotekoshi-trishuli-disaster-nepal"
     ]
   ],
   "skills": [
