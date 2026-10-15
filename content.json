@@ -1,0 +1,138 @@
+{
+  "summary": "Water resources engineer and AIT master?s researcher connecting hydrodynamic modelling, satellite Earth observation and machine learning to flood and drought risk. Experience spans Himalayan flood hazards, citizen science monitoring and reproducible basin-scale decision support, with ongoing research on satellite-informed Noah-MP correction and flash drought in Thailand.",
+  "projects": [
+    [
+      "Satellite-informed land surface reconstruction",
+      "Ongoing research ? AIT",
+      "Drought",
+      "Developing satellite-informed correction of Noah-MP land surface model outputs for surface and root-zone soil moisture, terrestrial water storage, precipitation and evaporation. The research targets a 1 km gridded record for 1940?2025 and its application to flash drought in Thailand. Satellite observations inform correction over their available overlap; the full historical period is a model-based reconstruction.",
+      "",
+      "Noah-MP ? Satellite observations ? Flash drought"
+    ],
+    [
+      "Thailand Water Storage Observatory",
+      "Research dashboard",
+      "Drought",
+      "Built basin-scale decision support for Thailand?s 22 principal basins and national aggregate, integrating GRACE water storage, full-compartment groundwater estimates, climate reconstruction and observed groundwater comparisons. Includes 46 regional/target ensembles, independent temporal testing and evidence from 511 wells. Residuals retain model and observation uncertainty and do not establish pumping volumes.",
+      "https://pratikkhanal16.github.io/thailand-water-storage-dss/",
+      "GRACE ? Python ? Climate modelling ? GIS"
+    ],
+    [
+      "Nepal Hydrological Extreme Flow DSS",
+      "Collaborative software ? Pratik & Saugat",
+      "Floods",
+      "Co-developed an interactive Streamlit decision-support application with Nepal DHM station metadata, flood and low-flow frequency analysis, distribution ranking, return-period design flows, record-quality diagnostics and bootstrap uncertainty.",
+      "https://github.com/pratikkhanal16/Nepal-Hydrological-Extreme-Flow-DSS",
+      "Streamlit ? Extreme value analysis ? Bootstrap"
+    ],
+    [
+      "Bhotekoshi flood study, Nepal",
+      "Project experience",
+      "Floods",
+      "Worked on flooding in the Bhotekoshi basin, Nepal, as part of a broader focus on Himalayan flood hazards and water resources. Detailed methods and project results are not yet included in the public portfolio.",
+      "",
+      "Himalayan hydrology ? Flood hazards"
+    ],
+    [
+      "Dhap & Nagmati dam-break analysis",
+      "Peer-reviewed ? H2Open Journal, 2025",
+      "Floods",
+      "Co-authored dam-break research using HEC-RAS to examine downstream flood hazards and potential consequences in Kathmandu, Nepal.",
+      "https://doi.org/10.2166/h2oj.2025.058",
+      "HEC-RAS ? Hydrodynamics ? Hazard mapping"
+    ],
+    [
+      "Madi River streamflow forecasting",
+      "Academic project ? AIT, 2025",
+      "AI & GIS",
+      "Developed and evaluated an LSTM model for multi-step streamflow forecasting, with hydro-meteorological time-series preparation and comparison against conventional forecasting methods.",
+      "",
+      "LSTM ? TensorFlow/Keras ? Time series"
+    ],
+    [
+      "Terai multi-source drought analysis",
+      "Academic project ? AIT, 2025",
+      "Drought",
+      "Analysed soil moisture, precipitation and terrestrial water storage indicators using SMAP, ERA5 and GRACE, with Python processing and drought severity mapping for Nepal?s Terai region.",
+      "",
+      "SMAP ? ERA5 ? GRACE ? Python"
+    ],
+    [
+      "Bagmati landslide susceptibility",
+      "Academic project ? AIT, 2025",
+      "AI & GIS",
+      "Applied a spatial ensemble deep learning framework combining CNN models and the Segment Anything Model for landslide susceptibility mapping, remote-sensing feature extraction and risk-zone delineation.",
+      "",
+      "CNN ? SAM ? QGIS/ArcGIS"
+    ],
+    [
+      "Forest fire prediction",
+      "Public code project",
+      "AI & GIS",
+      "Compared multiple linear regression, Ridge, Lasso and Elastic Net for fire prediction in the Bezia region, using cross-validation and hyperparameter tuning to address model selection and overfitting.",
+      "https://github.com/pratikkhanal16/Forest-fire-prediction",
+      "Regression ? Regularization ? Cross-validation"
+    ]
+  ],
+  "experience": [
+    [
+      "Asian Institute of Technology",
+      "Research Assistant ? URBAN Project",
+      "Dec 2025 ? Present",
+      "Flood hazard mapping under Dr. Natthachet Tangdamrongsub for the ADPC-funded URBAN project; HEC-RAS and GIS analysis of urban flood exposure, with forecast and vulnerability integration."
+    ],
+    [
+      "Addon Engineering Solutions",
+      "Hydrologist",
+      "Nov 2024 ? Present",
+      "Hydrological and hydraulic analysis for flood protection in Kaski, Arghakhanchi and Gulmi; rainfall?runoff modelling, river hydraulics, sediment assessment and erosion-control design."
+    ],
+    [
+      "Himalaya College of Engineering",
+      "Teaching Assistant ? Part-time",
+      "Nov 2024 ? Apr 2025",
+      "Taught computer-aided civil drawings and supported surveying laboratories and field camps, including auto level and total station instruction."
+    ],
+    [
+      "SmartPhones 4 Water Nepal",
+      "Research Assistant",
+      "Jun 2024 ? Nov 2024",
+      "Co-led MESSHI sediment monitoring with S4W-Nepal and the University of Pittsburgh; contributed to VICTORY precipitation and water-level quality control, citizen science monitoring and Hanumante flood modelling."
+    ]
+  ],
+  "publications": [
+    [
+      "Dam break analysis of the Nagmati and Dhap dams using HEC-RAS",
+      "Khanal, P., et al. ? H2Open Journal 8(3), 139?156 ? 2025",
+      "10.2166/h2oj.2025.058"
+    ],
+    [
+      "Comparative Analysis of Environmental Protection Provisions in Construction Procurement: A Case Study of Nepal?s Projects Funded by National and International Agencies",
+      "Acharya, S., et al. ? International Journal on Engineering Technology 1(2), 250?267 ? 2024",
+      "10.3126/injet.v1i2.66695"
+    ],
+    [
+      "Evaluating the Alignment between Intended Project Durations and Standard Time Cost Models: A Comparative Analysis in Basic Hospital Construction Projects in Nepal",
+      "Dahal, D., et al. ? International Journal on Engineering Technology 1(2), 211?229 ? 2024",
+      "10.3126/injet.v1i2.66688"
+    ]
+  ],
+  "skills": [
+    [
+      "Hydrology & hydraulics",
+      "HEC-RAS, HEC-HMS, SWAT, MIKE, HEC-ResSim, HBV, QUAL2K"
+    ],
+    [
+      "Earth observation & GIS",
+      "GRACE, SMAP, ERA5, Noah-MP, ArcGIS, QGIS"
+    ],
+    [
+      "Scientific computing & AI",
+      "Python, R, Pandas, NumPy, Matplotlib, Scikit-learn, TensorFlow/Keras, LSTM, CNN, SAM"
+    ],
+    [
+      "Engineering & fieldwork",
+      "AutoCAD Civil 3D, SW DTM, total station, auto level, acoustic Doppler velocimetry, Open OBS sediment sensing"
+    ]
+  ]
+}
